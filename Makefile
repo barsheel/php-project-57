@@ -1,8 +1,5 @@
-# Загружаем переменные из .env
-export $(shell grep -v '^#' .env | xargs)
-
 start:
-	php artisan serve --host=0.0.0.0 --port=$$APP_PORT
+	php artisan serve --host=0.0.0.0 --port=8000
 
 install:
 	composer require squizlabs/php_codesniffer
@@ -22,4 +19,6 @@ stan:
 	composer exec phpstan -- analyze --memory-limit=-1 -c phpstan.neon
 
 test:
-	php artisan test
+	php artisan test	
+	
+	
