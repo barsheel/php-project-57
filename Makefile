@@ -12,8 +12,8 @@ autoload:
 	composer dump-autoload
 
 lint:
-	composer exec --verbose phpcbf -- --standard=phpcs.xml ./public ./src
-	composer exec --verbose phpcs -- --standard=phpcs.xml ./public ./src
+	composer exec --verbose phpcbf -- --standard=PSR12 app routes database tests bootstrap/app.php
+	composer exec --verbose phpcs -- --standard=PSR12 app routes database tests bootstrap/app.php
 
 stan:
 	composer exec phpstan -- analyze --memory-limit=-1 -c phpstan.neon
