@@ -17,12 +17,10 @@ WORKDIR /app
 
 COPY . .
 
-EXPOSE 8000
+RUN composer install
+RUN cp .env.example .env
+RUN php artisan key:generate
+RUN npm ci
+RUN npm run build
 
-CMD bash -c "\
-    cp .env.example .env && \
-    php artisan key:generate && \
-    npm ci && \
-    npm run build && \
-    php artisan migrate:fresh --force --seed && \
-    make start"
+CMD ["bash", "-c", "php artisan migrate:fresh --force --seed && make start"]
