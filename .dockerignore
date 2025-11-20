@@ -1,7 +1,4 @@
-node_modules
-vendor
-.git
-.gitignore
-npm-debug.log
-yarn-error.log
-storage
+vendor/
+node_modules/
+.env
+*.sqlite
