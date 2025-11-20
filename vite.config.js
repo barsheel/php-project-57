@@ -8,4 +8,6 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+// чтобы на проде генерировались HTTPS-ссылки к ассетам
+    base: '[https://php-project-57-ibuh.onrender.com/](https://php-project-57-ibuh.onrender.com/)',
 });
