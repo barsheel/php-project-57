@@ -17,11 +17,13 @@ WORKDIR /app
 
 COPY . .
 
+RUN touch database/database.sqlite
+
 RUN cp .env.example .env
 
 RUN composer install
 RUN php artisan key:generate
-RUN npm ci
+RUN npm install
 RUN npm run build
 
 CMD ["bash", "-c", "php artisan migrate:fresh --force --seed && make start"]
