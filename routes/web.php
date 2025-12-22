@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskStatusController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -10,6 +11,13 @@ Route::resource('task_statuses', TaskStatusController::class)
     ->middleware('auth');
 
 Route::resource('task_statuses', TaskStatusController::class)
+    ->only(['index', 'show']);
+
+Route::resource('tasks', TaskController::class)
+    ->except(['index','show'])
+    ->middleware('auth');
+
+Route::resource('tasks', TaskController::class)
     ->only(['index', 'show']);
 
 Route::get('/', function () {
