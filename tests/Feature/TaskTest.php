@@ -34,7 +34,6 @@ class TaskTest extends TestCase
             'created_by_id' => $this->user->id,
             'assigned_to_id' => $this->assignedUser->id
         ]);
-
     }
 
 
@@ -203,5 +202,4 @@ class TaskTest extends TestCase
             'id' => '1'
         ]);
     }
-
 }

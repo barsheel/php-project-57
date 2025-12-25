@@ -8,7 +8,6 @@ use Illuminate\Support\ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {
-
     protected $policies = [
         Task::class => TaskPolicy::class
     ];
@@ -26,6 +25,5 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
     }
 }
