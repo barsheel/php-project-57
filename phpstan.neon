@@ -1,22 +1,21 @@
 parameters:
   level: 5
   paths:
-    - code/app
-    - code/routes
-    - code/tests
+    - app
+    - routes
     - tests
 
   excludePaths:
-    - code/routes/console.php
-    - code/routes/auth.php
-    - code/routes/channels.php (?)
-    - code/app/Providers/*
-    - code/app/Http/Middleware/*
-    - code/app/Exceptions/Handler.php (?)
-    - code/app/Models/User.php
-    - code/app/Http/Controllers/Auth/*
-    - code/tests/Feature/Auth/*
-    - code/app/Http/Kernel.php (?)
+    - routes/console.php
+    - routes/auth.php
+    - routes/channels.php (?)
+    - app/Providers/*
+    - app/Http/Middleware/*
+    - app/Exceptions/Handler.php (?)
+    - app/Models/User.php
+    - app/Http/Controllers/Auth/*
+    - tests/Feature/Auth/*
+    - app/Http/Kernel.php (?)
 
   reportUnmatchedIgnoredErrors: false
 
