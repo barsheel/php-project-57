@@ -8,6 +8,8 @@ use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Laracasts\Flash\Flash;
+use Mockery\Exception;
 
 class TaskController extends Controller
 {
@@ -36,13 +38,19 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTaskRequest $request) {
+    public function store(StoreTaskRequest $request)
+    {
+        try {
+            $taskData = $request->validated();
+            $task = new Task($taskData);
+            $task->created_by_id = auth()->id();
+            $task->save();
+            Flash::success('Задача создана');
+        } catch(Exception $e) {
+            Flash::error('Не удалось создать задачу');
+        }
 
-        $taskData = $request->validated();
-        $task = new Task($taskData);
-        $task->created_by_id = auth()->id();
-        $task->save();
-        return redirect()->route('tasks.index')->with('success', 'Задача создана');
+        return redirect()->route('tasks.index');
     }
 
     /**
@@ -68,8 +76,13 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        $request->validate(['name' => 'required']);
-        $task->update($request->all());
+        try {
+            $request->validate(['name' => 'required']);
+            $task->update($request->all());
+            Flash::success('Задача обновлена');
+        } catch (Exception $e) {
+            Flash::error('Не удалось обновить задачу');
+        }
         return redirect()->route('tasks.index');
     }
 
@@ -79,12 +92,18 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         $user = auth()->user();
-        if ($user->can('delete', $task)) {
-            $task->delete();
-            return redirect()->route('tasks.index')->with('success', 'Задача удалена');
-        } else {
-            return redirect()->route('tasks.index')->with('error', 'Вы не можете удалить эту задачу');
+
+        try {
+            if ($user->can('delete', $task)) {
+                $task->delete();
+                Flash::success('Задача удалена');
+            } else {
+                Flash::error('Нельзя удалить задачу, созданную другим пользователем');
+            }
+        } catch (Exception $e) {
+            Flash::error('Не удалось удалить задачу');
         }
 
+        return redirect()->route('tasks.index');
     }
 }
