@@ -4,7 +4,6 @@ start:
 install:
 	composer require squizlabs/php_codesniffer
 	composer require phpstan/phpstan
-	composer require PHPUnit/PHPUnit
 	composer install
 	composer validate
 
@@ -19,6 +18,5 @@ stan:
 	composer exec phpstan -- analyze --memory-limit=-1 -c phpstan.neon
 
 test:
-	php artisan test	
-	
-	
+	php artisan test
+
