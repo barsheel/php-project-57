@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TaskStatus;
 use Illuminate\Http\Request;
+use Laracasts\Flash\Flash;
 
 class TaskStatusController extends Controller
 {
@@ -29,8 +30,12 @@ class TaskStatusController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(['name' => 'required']);
-        TaskStatus::create($request->all());
+        try {
+            $request->validate(['name' => 'required']);
+            TaskStatus::create($request->all());
+        } catch (\Exception $exception) {
+            Flash::error('Не удалось создать статус');
+        }
         return redirect()->route('task_statuses.index');
     }
 
@@ -55,8 +60,13 @@ class TaskStatusController extends Controller
      */
     public function update(Request $request, TaskStatus $taskStatus)
     {
-        $request->validate(['name' => 'required']);
-        $taskStatus->update($request->all());
+        try {
+            $request->validate(['name' => 'required']);
+            $taskStatus->update($request->all());
+            Flash::success('Статус обновлен');
+        } catch (\Exception $exception) {
+            Flash::error('Не удалось обновить статус');
+        }
         return redirect()->route('task_statuses.index');
     }
 
@@ -65,7 +75,13 @@ class TaskStatusController extends Controller
      */
     public function destroy(TaskStatus $taskStatus)
     {
-        $taskStatus->delete();
+        try {
+            if ($taskStatus)
+            $taskStatus->delete();
+            Flash::success('Статус удалён');
+        } catch (\Exception $exception) {
+            Flash::error('Не удалось удалить статус');
+        }
         return redirect()->route('task_statuses.index');
     }
 }
