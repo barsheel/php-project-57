@@ -24,8 +24,10 @@ class StoreTaskRequest extends FormRequest
     {
         return [
             "name" => "required|string|max:255",
+            "description" => "string|nullable",
             "status_id" => "required|exists:task_statuses,id",
             "assigned_to_id" => "nullable|exists:users,id",
+            'labels' => 'nullable|exists:labels,id'
         ];
     }
     public function messages()
