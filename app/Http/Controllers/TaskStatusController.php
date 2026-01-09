@@ -40,14 +40,6 @@ class TaskStatusController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(TaskStatus $taskStatus)
-    {
-        return "всё пошло не так";
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(TaskStatus $taskStatus)
@@ -76,7 +68,6 @@ class TaskStatusController extends Controller
     public function destroy(TaskStatus $taskStatus)
     {
         try {
-            if ($taskStatus)
             $taskStatus->delete();
             Flash::success('Статус удалён');
         } catch (\Exception $exception) {
