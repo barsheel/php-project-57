@@ -6,10 +6,8 @@
             <div class="flex justify-between items-start mb-4">
                 <span class="font-bold text-gray-800 text-xl dark:text-white">Просмотр задачи: {{ $task->name }}</span>
                 <a href="{{ route('tasks.edit', $task) }}"
-                   class="inline-flex items-center px-3 py-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-md shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-800" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M11.3 1.046a1 1 0 00-2.6 0l-.356 1.03a7.003 7.003 0 00-2.02.9l-.95-.95a1 1 0 00-1.414 1.414l.95.95a7.003 7.003 0 00-.9 2.02L1.046 8.7a1 1 0 000 2.6l1.03.356a7.003 7.003 0 00.9 2.02l-.95.95a1 1 0 001.414 1.414l.95-.95a7.003 7.003 0 002.02.9l.356 1.03a1 1 0 002.6 0l.356-1.03a7.003 7.003 0 002.02-.9l.95.95a1 1 0 001.414-1.414l-.95-.95a7.003 7.003 0 00.9-2.02l1.03-.356a1 1 0 000-2.6l-1.03-.356a7.003 7.003 0 00-.9-2.02l.95-.95a1 1 0 00-1.414-1.414l-.95.95a7.003 7.003 0 00-2.02-.9L11.3 1.046zM10 13a3 3 0 110-6 3 3 0 010 6z" clip-rule="evenodd" />
-                    </svg>
+                   class="inline-flex items-дуае px-3 py-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-md shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700">
+                    &#9881;
                 </a>
             </div>
 
@@ -20,13 +18,13 @@
                 <p><span class="font-bold">Описание:</span> <span class="font-normal">{{ $task->description }}</span></p>
                 <p class="font-bold">Метки:</p>
                 <div class="flex flex-wrap gap-2 mt-1">
-                    {{--@foreach($task->labels as $label)
+                    @foreach($task->labels as $label)
                         <div x-data="{ show: true }" x-show="show"
                              class="text-xs inline-flex items-center font-bold uppercase px-3 py-1 bg-blue-200 text-blue-700 rounded-full cursor-pointer"
                              @click="show = false">
                             {{ $label->name }}
                         </div>
-                    @endforeach--}}
+                    @endforeach
                 </div>
             </div>
 

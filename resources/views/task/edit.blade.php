@@ -58,7 +58,7 @@
                         <x-input-error class="mt-2" :messages="$errors->get('assigned_to_id')"/>
                     </div>
 
-                    {{--<div>
+                    <div>
                         <x-input-label for="labels[]" :value="__('Метки')"/>
                         <select id="labels[]" name="labels[]" multiple=""
                                 class="mt-1 block border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
@@ -71,7 +71,7 @@
                             @endforeach
                         </select>
                         <x-input-error class="mt-2" :messages="$errors->get('labels')"/>
-                    </div>--}}
+                    </div>
 
                     <div class="flex items-center gap-4">
                         <x-primary-button>{{ __('Обновить') }}</x-primary-button>
