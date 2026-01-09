@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Task\DeleteTaskRequest;
 use App\Http\Requests\Task\StoreTaskRequest;
+use App\Http\Requests\Task\UpdateTaskRequest;
+use App\Models\Label;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Laracasts\Flash\Flash;
 use Mockery\Exception;
 
@@ -32,7 +35,9 @@ class TaskController extends Controller
     {
         $statuses = TaskStatus::all();
         $users = User::all();
-        return view('task.create', compact('statuses', 'users'));
+        $labels = Label::all();
+
+        return view('task.create', compact('statuses', 'users', 'labels'));
     }
 
     /**
@@ -69,16 +74,19 @@ class TaskController extends Controller
     {
         $statuses = TaskStatus::all();
         $users = User::all();
-        return view('task.edit', compact('task', 'statuses', 'users'));
+        $labels = Label::all();
+
+        return view('task.edit', compact('task', 'statuses', 'users', 'labels'));
     }
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Task $task)
+    public function update(UpdateTaskRequest $request, Task $task)
     {
         try {
-            $request->validate(['name' => 'required']);
-            $task->update($request->all());
+            $taskData = $request->validated();
+            $task->update($taskData);
+            $task->labels()->sync($request->input('labels'));
             Flash::success('Задача обновлена');
         } catch (Exception $e) {
             Flash::error('Не удалось обновить задачу');
