@@ -18,6 +18,11 @@
                                 :active="request()->routeIs('tasks.index')">
                         {{ __('Задачи') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('labels.index')"
+                                :active="request()->routeIs('labels.index')">
+                        {{ __('Метки') }}
+                    </x-nav-link>
                 </div>
             </div>
 
