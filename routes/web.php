@@ -1,16 +1,26 @@
 <?php
 
+use App\Http\Controllers\LabelController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
+
+Route::resource('labels', LabelController::class)
+    ->except(['index','show'])
+    ->middleware('auth');
+
+Route::resource('labels', LabelController::class)
+    ->only(['index']);
+
 
 Route::resource('task_statuses', TaskStatusController::class)
     ->except(['index','show'])
     ->middleware('auth');
 
 Route::resource('task_statuses', TaskStatusController::class)
-    ->only(['index', 'show']);
+    ->only(['index']);
+
 
 Route::resource('tasks', TaskController::class)
     ->except(['index','show'])
@@ -20,7 +30,7 @@ Route::resource('tasks', TaskController::class)
     ->only(['index', 'show']);
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/tasks');
 });
 
 Route::get('/dashboard', function () {
