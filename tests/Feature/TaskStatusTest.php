@@ -152,7 +152,6 @@ class TaskStatusTest extends TestCase
         Auth::logout();
 
         $response = $this->patch('/task_statuses/1', ['name' => 'updated']);
-        $response->dump();
         $response->assertRedirect('/login');
     }
 
@@ -161,7 +160,6 @@ class TaskStatusTest extends TestCase
         Auth::logout();
 
         $response = $this->delete('/task_statuses/1');
-        $response->dump();
         $response->assertRedirect('/login');
     }
 }
