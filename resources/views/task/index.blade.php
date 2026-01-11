@@ -103,9 +103,9 @@
                 </tbody>
             </table>
 
-            {{--<div class="mt-4">
+            <div class="mt-4">
                 {{ $tasks->links() }}
-            </div>--}}
+            </div>
         </div>
     </div>
 </x-app-layout>
