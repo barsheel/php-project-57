@@ -12,7 +12,7 @@ class UpdateTaskRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->can('update', $this->route('task'));
+        return $this->user()->can('update', $this->route('task') );
     }
 
     /**
@@ -26,15 +26,17 @@ class UpdateTaskRequest extends FormRequest
             "name" => "required|string|max:255",
             "status_id" => "required|exists:task_statuses,id",
             "assigned_to_id" => "nullable|exists:users,id",
+            "labels" => "nullable|array",
+            "labels.*" => "exists:labels,id",
         ];
     }
     public function messages()
     {
         return [
-            'name.required' => 'Название задачи обязательно',
-            'name.max' => 'Название не может быть длиннее 255 символов',
-            'status_id.required' => 'Выберите статус',
-            'status_id.exists' => 'Статус не найден'
+            "name.required" => "Название задачи обязательно",
+            "name.max" => "Название не может быть длиннее 255 символов",
+            "status_id.required" => "Выберите статус",
+            "status_id.exists" => "Статус не найден"
         ];
     }
 }
