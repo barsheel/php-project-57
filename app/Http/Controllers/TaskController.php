@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Laracasts\Flash\Flash;
 use Mockery\Exception;
+use MongoDB\Driver\Query;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class TaskController extends Controller
 {
@@ -21,9 +23,13 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::all();
         $statuses = TaskStatus::all();
         $users = User::all();
+
+        $tasks = QueryBuilder::for(Task::class)
+            ->allowedFilters(['status_id', 'created_by_id', 'assigned_to_id'])
+            ->paginate(15)
+            ->withQueryString();
 
         return view('task.index', compact('tasks', 'statuses', 'users'));
     }
