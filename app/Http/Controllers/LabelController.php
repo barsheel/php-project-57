@@ -38,7 +38,7 @@ class LabelController extends Controller
             $label = Label::create($request->validated());
             $label->save();
             Flash::success('Метка создана');
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             Flash::error('Не удалось создать метку');
         }
         return redirect()->route('labels.index');
@@ -68,7 +68,7 @@ class LabelController extends Controller
         try {
             $label->update($request->validated());
             Flash::success('Метка обновлена');
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             Flash::error('Не удалось обновить метку');
         }
         return redirect()->route('labels.index');

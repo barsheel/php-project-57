@@ -57,7 +57,7 @@ class TaskController extends Controller
             $task->created_by_id = auth()->id();
             $task->save();
             Flash::success('Задача создана');
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             Flash::error('Не удалось создать задачу');
         }
 

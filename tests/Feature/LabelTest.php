@@ -15,6 +15,7 @@ use Tests\TestCase;
 class LabelTest extends TestCase
 {
     use RefreshDatabase;
+
     private User $user;
 
     protected function setUp(): void
