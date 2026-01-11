@@ -79,12 +79,17 @@ class LabelController extends Controller
      */
     public function destroy(Label $label)
     {
-        try {
-            $label->delete();
-            Flash::success('Метка удалена');
-        } catch(Exception $e) {
+        if ($label->tasks()->exists()) {
             Flash::error('Не удалось удалить метку');
+        } else {
+            try {
+                $label->delete();
+                Flash::success('Метка удалена');
+            } catch (Exception $e) {
+                Flash::error('Не удалось удалить метку');
+            }
         }
+
         return redirect()->route('labels.index');
     }
 }
