@@ -10,6 +10,6 @@ class Label extends Model
 
     public function tasks()
     {
-        return $this->belongsToMany(Task::class, 'label_task_pivots', 'label_id', 'task_id');
+        return $this->belongsToMany(Task::class, 'label_task_pivots', 'label_id', 'task_id')->withTimestamps();
     }
 }
