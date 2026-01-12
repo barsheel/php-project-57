@@ -30,8 +30,8 @@ Route::resource('tasks', TaskController::class)
     ->only(['index', 'show']);
 
 Route::get('/', function () {
-    return redirect('/tasks');
-});
+    return view('welcome');
+})->name('welcome');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
