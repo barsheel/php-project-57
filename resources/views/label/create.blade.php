@@ -12,20 +12,20 @@
                     @csrf
 
                     <div>
-                        <x-input-label for="name" :value="__('Имя')"/>
+                        <x-input-label for="name" value="Имя"/>
                         <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" autofocus/>
                         <x-input-error class="mt-2" :messages="$errors->get('name')"/>
                     </div>
 
                     <div>
-                        <x-input-label for="description" :value="__('Описание')"/>
+                        <x-input-label for="description" value="Описание"/>
                         <x-textarea-input id="description" name="description" cols="30" rows="6"
                                           class="mt-1 block w-full"></x-textarea-input>
                         <x-input-error class="mt-2" :messages="$errors->get('description')"/>
                     </div>
 
                     <div class="flex items-center gap-4">
-                        <x-primary-button>{{ __('Создать') }}</x-primary-button>
+                        <x-primary-button>Создать</x-primary-button>
                     </div>
                 </form>
             </div>

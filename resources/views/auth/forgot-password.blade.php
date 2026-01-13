@@ -1,7 +1,5 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        {{ __('Забыли пароль? Не проблема. Просто сообщите нам свой адрес электронной почты, и мы вышлем вам ссылку для сброса пароля, по которой вы сможете выбрать новый') }}
-    </div>
+    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">Забыли пароль? Не проблема. Просто сообщите нам свой адрес электронной почты, и мы вышлем вам ссылку для сброса пароля, по которой вы сможете выбрать новый</div>
 
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')"/>
@@ -11,7 +9,7 @@
 
         <!-- Email Address -->
         <div>
-            <x-input-label for="email" :value="__('Email')"/>
+            <x-input-label for="email" value="Email"/>
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required
                           autofocus/>
             <x-input-error :messages="$errors->get('email')" class="mt-2"/>

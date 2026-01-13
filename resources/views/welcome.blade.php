@@ -1,11 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
         <h1 class="font-semibold text-2xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Привет от Хекслета!') }}
+           Привет от Хекслета!
         </h1>
 
         <p class="text-sm mt-2 text-gray-600 dark:text-gray-300">
-            {{ __('Это простой менеджер задач на Laravel') }}
+            Это простой менеджер задач на Laravel
         </p>
     </x-slot>
 </x-app-layout>

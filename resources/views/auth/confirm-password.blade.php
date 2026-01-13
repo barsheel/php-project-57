@@ -1,14 +1,12 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        {{ __('Это защищённая область приложения. Пожалуйста, подтвердите пароль перед продолжением.') }}
-    </div>
+    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">Это защищённая область приложения. Пожалуйста, подтвердите пароль перед продолжением.</div>
 
     <form method="POST" action="{{ route('password.confirm') }}">
         @csrf
 
         <!-- Password -->
         <div>
-            <x-input-label for="password" :value="__('Пароль')" />
+            <x-input-label for="password" :value="Пароль" />
 
             <x-text-input id="password" class="block mt-1 w-full"
                           type="password"
@@ -19,9 +17,7 @@
         </div>
 
         <div class="flex justify-end mt-4">
-            <x-primary-button>
-                {{ __('Подтвердить') }}
-            </x-primary-button>
+            <x-primary-button>Подтвердить</x-primary-button>
         </div>
     </form>
 </x-guest-layout>

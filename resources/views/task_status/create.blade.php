@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Создание статуса') }}
+            Создание статуса
         </h2>
     </x-slot>
 
@@ -12,13 +12,13 @@
                     @csrf
 
                     <div>
-                        <x-input-label for="name" :value="__('Имя')" />
+                        <x-input-label for="name" value="Имя" />
                         <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" autofocus />
                         <x-input-error class="mt-2" :messages="$errors->get('name')" />
                     </div>
 
                     <div class="flex items-center gap-4">
-                        <x-primary-button>{{ __('Создать') }}</x-primary-button>
+                        <x-primary-button>Создать</x-primary-button>
                     </div>
                 </form>
             </div>

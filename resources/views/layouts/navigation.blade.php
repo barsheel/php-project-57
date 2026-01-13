@@ -11,17 +11,17 @@
                 <div class="hidden sm:flex space-x-8 sm:ms-10">
                     <x-nav-link :href="route('task_statuses.index')"
                                 :active="request()->routeIs('task_statuses.index')">
-                        {{ __('Статусы') }}
+                        Статусы
                     </x-nav-link>
 
                     <x-nav-link :href="route('tasks.index')"
                                 :active="request()->routeIs('tasks.index')">
-                        {{ __('Задачи') }}
+                        Задачи
                     </x-nav-link>
 
                     <x-nav-link :href="route('labels.index')"
                                 :active="request()->routeIs('labels.index')">
-                        {{ __('Метки') }}
+                        Метки
                     </x-nav-link>
                 </div>
             </div>
@@ -47,13 +47,13 @@
                             </x-slot>
 
                             <x-slot name="content">
-                                <x-dropdown-link :href="route('profile.edit')">{{ __('Профиль') }}</x-dropdown-link>
+                                <x-dropdown-link :href="route('profile.edit')">Профиль</x-dropdown-link>
 
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <x-dropdown-link :href="route('logout')"
                                                      onclick="event.preventDefault(); this.closest('form').submit();">
-                                        {{ __('Выйти') }}
+                                        Выйти
                                     </x-dropdown-link>
                                 </form>
                             </x-slot>
@@ -65,18 +65,18 @@
                         @csrf
                         <x-responsive-nav-link :href="route('logout')"
                                                onclick="event.preventDefault(); this.closest('form').submit();">
-                            {{ __('Выйти') }}
+                            Выйти
                         </x-responsive-nav-link>
                     </form>
                 @else
                     <!-- Вход / Регистрация всегда видны -->
                     <x-nav-link :href="route('login')"
                                 :active="request()->routeIs('login')">
-                        {{ __('Войти') }}
+                        Войти
                     </x-nav-link>
                     <x-nav-link :href="route('register')"
                                 :active="request()->routeIs('register')">
-                        {{ __('Регистрация') }}
+                        Регистрация
                     </x-nav-link>
                 @endauth
 
@@ -110,7 +110,7 @@
 
                 <div class="mt-3 space-y-1">
                     <x-responsive-nav-link :href="route('profile.edit')">
-                        {{ __('Профиль') }}
+                        Профиль
                     </x-responsive-nav-link>
                 </div>
             </div>
