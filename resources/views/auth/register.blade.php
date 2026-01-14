@@ -47,10 +47,10 @@
                 Уже зарегистрированы?
             </a>
 
-            <button type="submit">
+            {{--<button type="submit">
                 Зарегистрировать
-            </button>
-            {{--<x-primary-button class="ms-4">Зарегистрировать</x-primary-button>--}}
+            </button>--}}
+            <x-primary-button class="ms-4">Зарегистрировать</x-primary-button>
         </div>
     </form>
 </x-guest-layout>
