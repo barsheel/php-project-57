@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskStatus\StoreTaskStatusRequest;
+use App\Http\Requests\TaskStatus\UpdateTaskStatusRequest;
 use App\Models\TaskStatus;
 use Illuminate\Http\Request;
 use Laracasts\Flash\Flash;
@@ -28,7 +30,7 @@ class TaskStatusController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreTaskStatusRequest $request)
     {
         $request->validate(['name' => 'required']);
         TaskStatus::create($request->all());
@@ -47,7 +49,7 @@ class TaskStatusController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TaskStatus $taskStatus)
+    public function update(UpdateTaskStatusRequest $request, TaskStatus $taskStatus)
     {
         $request->validate(['name' => 'required']);
         $taskStatus->update($request->all());
