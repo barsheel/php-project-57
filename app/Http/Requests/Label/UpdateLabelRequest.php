@@ -22,7 +22,7 @@ class UpdateLabelRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
+            'name' => 'required|unique:labels,name',
             'description' => 'nullable',
         ];
     }
@@ -30,7 +30,8 @@ class UpdateLabelRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => "Это обязательное поле"
+            'name.required' => "Это обязательное поле",
+            'name.unique' => "Метка с таким именем уже существует"
         ];
     }
 }
