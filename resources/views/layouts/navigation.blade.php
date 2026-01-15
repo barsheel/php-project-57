@@ -33,7 +33,7 @@
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <x-primary-button type="submit">
-                            Выйти
+                            Выход
                         </x-primary-button>
                     </form>
                 @else
