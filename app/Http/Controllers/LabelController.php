@@ -62,7 +62,7 @@ class LabelController extends Controller
     public function update(UpdateLabelRequest $request, Label $label)
     {
         $label->update($request->validated());
-        Flash::success('Метка обновлена');
+        Flash::success('Метка успешно обновлена');
         return redirect()->route('labels.index');
     }
 
@@ -75,7 +75,7 @@ class LabelController extends Controller
             Flash::error('Не удалось удалить метку');
         } else {
             $label->delete();
-            Flash::success('Метка удалена');
+            Flash::success('Метка успешно удалена');
         }
 
         return redirect()->route('labels.index');

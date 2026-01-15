@@ -51,7 +51,7 @@ class TaskStatusController extends Controller
     {
         $request->validate(['name' => 'required']);
         $taskStatus->update($request->all());
-        Flash::success('Статус обновлен');
+        Flash::success('Статус успешно изменён');
         return redirect()->route('task_statuses.index');
     }
 
@@ -61,7 +61,7 @@ class TaskStatusController extends Controller
     public function destroy(TaskStatus $taskStatus)
     {
         $taskStatus->delete();
-        Flash::success('Статус удалён');
+        Flash::success('Статус успешно удалён');
         return redirect()->route('task_statuses.index');
     }
 }
