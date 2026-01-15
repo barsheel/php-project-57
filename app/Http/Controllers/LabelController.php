@@ -36,7 +36,7 @@ class LabelController extends Controller
     {
         $label = Label::create($request->validated());
         $label->save();
-        Flash::success('Метка создана');
+        Flash::success('Метка успешно создана');
         return redirect()->route('labels.index');
     }
 
