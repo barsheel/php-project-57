@@ -22,7 +22,8 @@ class StoreTaskStatusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required'
+            'name' => 'required|unique:task_statuses,name',
+            'name.unique' => "Статус с таким именем уже существует"
         ];
     }
 

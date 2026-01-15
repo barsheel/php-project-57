@@ -29,7 +29,8 @@ class UpdateTaskStatusRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => "Это обязательное поле"
+            'name.required' => "Это обязательное поле",
+            'name.unique' => "Статус с таким именем уже существует"
         ];
     }
 }
