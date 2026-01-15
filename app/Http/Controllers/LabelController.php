@@ -34,13 +34,9 @@ class LabelController extends Controller
      */
     public function store(StoreLabelRequest $request)
     {
-        try {
-            $label = Label::create($request->validated());
-            $label->save();
-            Flash::success('Метка создана');
-        } catch (Exception $e) {
-            Flash::error('Не удалось создать метку');
-        }
+        $label = Label::create($request->validated());
+        $label->save();
+        Flash::success('Метка создана');
         return redirect()->route('labels.index');
     }
 
@@ -65,12 +61,8 @@ class LabelController extends Controller
      */
     public function update(UpdateLabelRequest $request, Label $label)
     {
-        try {
-            $label->update($request->validated());
-            Flash::success('Метка обновлена');
-        } catch (Exception $e) {
-            Flash::error('Не удалось обновить метку');
-        }
+        $label->update($request->validated());
+        Flash::success('Метка обновлена');
         return redirect()->route('labels.index');
     }
 
@@ -82,12 +74,8 @@ class LabelController extends Controller
         if ($label->tasks()->exists()) {
             Flash::error('Не удалось удалить метку');
         } else {
-            try {
-                $label->delete();
-                Flash::success('Метка удалена');
-            } catch (Exception $e) {
-                Flash::error('Не удалось удалить метку');
-            }
+            $label->delete();
+            Flash::success('Метка удалена');
         }
 
         return redirect()->route('labels.index');
