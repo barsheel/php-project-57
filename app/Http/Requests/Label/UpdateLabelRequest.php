@@ -26,4 +26,11 @@ class UpdateLabelRequest extends FormRequest
             'description' => 'nullable',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'name' => "Это обязательное поле"
+        ];
+    }
 }

@@ -25,4 +25,11 @@ class UpdateTaskStatusRequest extends FormRequest
             'name' => 'required|exists:task_statuses,name'
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'name' => "Это обязательное поле"
+        ];
+    }
 }

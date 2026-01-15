@@ -25,4 +25,11 @@ class StoreTaskStatusRequest extends FormRequest
             'name' => 'required'
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'name' => "Это обязательное поле"
+        ];
+    }
 }
