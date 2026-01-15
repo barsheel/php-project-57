@@ -30,12 +30,9 @@ class TaskStatusController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            $request->validate(['name' => 'required']);
-            TaskStatus::create($request->all());
-        } catch (\Exception $exception) {
-            Flash::error('Не удалось создать статус');
-        }
+        $request->validate(['name' => 'required']);
+        TaskStatus::create($request->all());
+        Flash::success('Статус успешно создан');
         return redirect()->route('task_statuses.index');
     }
 
@@ -52,13 +49,9 @@ class TaskStatusController extends Controller
      */
     public function update(Request $request, TaskStatus $taskStatus)
     {
-        try {
-            $request->validate(['name' => 'required']);
-            $taskStatus->update($request->all());
-            Flash::success('Статус обновлен');
-        } catch (\Exception $exception) {
-            Flash::error('Не удалось обновить статус');
-        }
+        $request->validate(['name' => 'required']);
+        $taskStatus->update($request->all());
+        Flash::success('Статус обновлен');
         return redirect()->route('task_statuses.index');
     }
 
@@ -67,12 +60,8 @@ class TaskStatusController extends Controller
      */
     public function destroy(TaskStatus $taskStatus)
     {
-        try {
-            $taskStatus->delete();
-            Flash::success('Статус удалён');
-        } catch (\Exception $exception) {
-            Flash::error('Не удалось удалить статус');
-        }
+        $taskStatus->delete();
+        Flash::success('Статус удалён');
         return redirect()->route('task_statuses.index');
     }
 }
