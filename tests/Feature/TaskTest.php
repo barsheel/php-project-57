@@ -38,13 +38,14 @@ class TaskTest extends TestCase
 
 
 
-    //user tests
-    public function test_user_can_see_tasks(): void
+    // user tests
+    public function testUserCanSeeTasks(): void
     {
         $response = $this->get('/tasks');
         $response->assertOk();
     }
-    public function test_user_can_see_creation_form(): void
+
+    public function testUserCanSeeCreationForm(): void
     {
         $response = $this
             ->actingAs($this->user)
@@ -52,13 +53,13 @@ class TaskTest extends TestCase
         $response->assertOk();
     }
 
-    public function user_can_see_task(): void
+    public function testUserCanSeeTask(): void
     {
         $response = $this->get('/tasks/1');
         $response->assertOk();
     }
 
-    public function test_user_can_see_edit_form(): void
+    public function testUserCanSeeEditForm(): void
     {
         $response = $this
             ->actingAs($this->user)
@@ -67,7 +68,7 @@ class TaskTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_user_can_create_task(): void
+    public function testUserCanCreateTask(): void
     {
 
         $response = $this
@@ -86,7 +87,7 @@ class TaskTest extends TestCase
         ]);
     }
 
-    public function test_user_can_update_task(): void
+    public function testUserCanUpdateTask(): void
     {
         $this->assertDatabaseHas('tasks', [
             'name' => 'INITIAL NAME'
@@ -112,7 +113,7 @@ class TaskTest extends TestCase
         ]);
     }
 
-    public function test_user_can_delete_own_task(): void
+    public function testUserCanDeleteOwnTask(): void
     {
         $response = $this
             ->actingAs($this->user)
@@ -124,7 +125,7 @@ class TaskTest extends TestCase
         $response->assertRedirect('/tasks');
     }
 
-    public function test_user_cant_delete_foreign_users_task(): void
+    public function testUserCantDeleteForeignUsersTask(): void
     {
         $response = $this
             ->actingAs($this->assignedUser)
@@ -138,19 +139,20 @@ class TaskTest extends TestCase
     }
 
 
-    //guest tests
-    public function guest_can_see_task(): void
+    // guest tests
+    public function testGuestCanSeeTask(): void
     {
         $response = $this->get('/tasks/1/edit');
         $response->assertOk();
     }
 
-    public function test_guest_can_see_tasks(): void
+    public function testGuestCanSeeTasks(): void
     {
         $response = $this->get('/tasks');
         $response->assertOk();
     }
-    public function test_guest_cant_create_task(): void
+
+    public function testGuestCantCreateTask(): void
     {
         $response = $this
             ->post('/tasks', [
@@ -167,7 +169,8 @@ class TaskTest extends TestCase
             'id' => '2'
         ]);
     }
-    public function test_guest_cant_update_task(): void
+
+    public function testGuestCantUpdateTask(): void
     {
         $response = $this
             ->actingAs($this->user)
@@ -188,7 +191,7 @@ class TaskTest extends TestCase
         ]);
     }
 
-    public function test_guest_cant_delete_task(): void
+    public function testGuestCantDeleteTask(): void
     {
         $response = $this
             ->actingAs($this->user)

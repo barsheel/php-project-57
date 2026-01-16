@@ -20,13 +20,13 @@ class TaskStatusTest extends TestCase
     }
 
 
-    public function test_user_can_see_task_statuses(): void
+    public function testUserCanSeeTaskStatuses(): void
     {
         $response = $this->get('/task_statuses');
         $response->assertOk();
     }
 
-    public function test_user_can_see_task_statuses_create_form(): void
+    public function testUserCanSeeTaskStatusesCreateForm(): void
     {
         $response = $this
             ->actingAs($this->user)
@@ -34,7 +34,7 @@ class TaskStatusTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_user_can_see_task_statuses_edit_form(): void
+    public function testUserCanSeeTaskStatusesEditForm(): void
     {
         $this
             ->actingAs($this->user)
@@ -47,7 +47,7 @@ class TaskStatusTest extends TestCase
     }
 
 
-    public function test_user_can_store_task_status(): void
+    public function testUserCanStoreTaskStatus(): void
     {
         $response = $this
             ->actingAs($this->user)
@@ -62,7 +62,7 @@ class TaskStatusTest extends TestCase
         ]);
     }
 
-    public function test_user_can_update_task_status(): void
+    public function testUserCanUpdateTaskStatus(): void
     {
         $this
             ->actingAs($this->user)
@@ -87,7 +87,7 @@ class TaskStatusTest extends TestCase
         ]);
     }
 
-    public function test_user_can_delete_task_status(): void
+    public function testUserCanDeleteTaskStatus(): void
     {
         $this
             ->actingAs($this->user)
@@ -113,7 +113,7 @@ class TaskStatusTest extends TestCase
 
 
     // guest
-    public function test_guest_can_see_task_statuses(): void
+    public function testGuestCanSeeTaskStatuses(): void
     {
         Auth::logout();
 
@@ -122,7 +122,7 @@ class TaskStatusTest extends TestCase
     }
 
 
-    public function test_guest_cannot_see_task_status_create_form(): void
+    public function testGuestCannotSeeTaskStatusCreateForm(): void
     {
         Auth::logout();
 
@@ -130,7 +130,7 @@ class TaskStatusTest extends TestCase
         $response->assertRedirect('/login');
     }
 
-    public function test_guest_cannot_see_task_status_edit_form(): void
+    public function testGuestCannotSeeTaskStatusEditForm(): void
     {
         Auth::logout();
 
@@ -139,7 +139,7 @@ class TaskStatusTest extends TestCase
     }
 
 
-    public function test_guest_cannot_store_task_status(): void
+    public function testGuestCannotStoreTaskStatus(): void
     {
         Auth::logout();
 
@@ -147,7 +147,7 @@ class TaskStatusTest extends TestCase
         $response->assertRedirect('/login');
     }
 
-    public function test_guest_cannot_update_task_status(): void
+    public function testGuestCannotUpdateTaskStatus(): void
     {
         Auth::logout();
 
@@ -155,7 +155,7 @@ class TaskStatusTest extends TestCase
         $response->assertRedirect('/login');
     }
 
-    public function test_guest_cannot_delete_task_status(): void
+    public function testGuestCannotDeleteTaskStatus(): void
     {
         Auth::logout();
 

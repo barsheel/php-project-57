@@ -25,13 +25,13 @@ class LabelTest extends TestCase
     }
 
 
-    public function test_user_can_see_labels(): void
+    public function testUserCanSeeLabels(): void
     {
         $response = $this->get('/labels');
         $response->assertOk();
     }
 
-    public function test_user_can_see_labels_create_form(): void
+    public function testUserCanSeeLabelsCreateForm(): void
     {
         $response = $this
             ->actingAs($this->user)
@@ -39,7 +39,7 @@ class LabelTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_user_can_see_labels_edit_form(): void
+    public function testUserCanSeeLabelsEditForm(): void
     {
         $this
             ->actingAs($this->user)
@@ -52,7 +52,7 @@ class LabelTest extends TestCase
     }
 
 
-    public function test_user_can_store_label(): void
+    public function testUserCanStoreLabel(): void
     {
         $response = $this
             ->actingAs($this->user)
@@ -67,7 +67,7 @@ class LabelTest extends TestCase
         ]);
     }
 
-    public function test_user_can_update_label(): void
+    public function testUserCanUpdateLabel(): void
     {
         $this
             ->actingAs($this->user)
@@ -92,7 +92,7 @@ class LabelTest extends TestCase
         ]);
     }
 
-    public function test_user_can_delete_label(): void
+    public function testUserCanDeleteLabel(): void
     {
         $this
             ->actingAs($this->user)
@@ -118,7 +118,7 @@ class LabelTest extends TestCase
 
 
     // guest
-    public function test_guest_can_see_labels(): void
+    public function testGuestCanSeeLabels(): void
     {
         Auth::logout();
 
@@ -127,7 +127,7 @@ class LabelTest extends TestCase
     }
 
 
-    public function test_guest_cannot_see_label_create_form(): void
+    public function testGuestCannotSeeLabelCreateForm(): void
     {
         Auth::logout();
 
@@ -135,7 +135,7 @@ class LabelTest extends TestCase
         $response->assertRedirect('/login');
     }
 
-    public function test_guest_cannot_see_label_edit_form(): void
+    public function testGuestCannotSeeLabelEditForm(): void
     {
         Auth::logout();
 
@@ -144,7 +144,7 @@ class LabelTest extends TestCase
     }
 
 
-    public function test_guest_cannot_store_label(): void
+    public function testGuestCannotStoreLabel(): void
     {
         Auth::logout();
 
@@ -152,7 +152,7 @@ class LabelTest extends TestCase
         $response->assertRedirect('/login');
     }
 
-    public function test_guest_cannot_update_label(): void
+    public function testGuestCannotUpdateLabel(): void
     {
         Auth::logout();
 
@@ -160,7 +160,7 @@ class LabelTest extends TestCase
         $response->assertRedirect('/login');
     }
 
-    public function test_guest_cannot_delete_label(): void
+    public function testGuestCannotDeleteLabel(): void
     {
         Auth::logout();
 
@@ -169,7 +169,7 @@ class LabelTest extends TestCase
     }
 
 
-    public function test_guest_cannot_delete_task_if_used(): void
+    public function testGuestCannotDeleteTaskIfUsed(): void
     {
         $label = Label::create(['name' => 'test']);
         $this->assertDatabaseHas('labels', ['name' => 'test']);
