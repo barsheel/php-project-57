@@ -80,7 +80,7 @@ class TaskController extends Controller
         $statuses = TaskStatus::all();
         $users = User::all();
         $labels = Label::all();
-
+        Flash::success('Задача успешно изменена');
         return view('task.edit', compact('task', 'statuses', 'users', 'labels'));
     }
     /**
