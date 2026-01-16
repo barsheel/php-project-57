@@ -118,7 +118,7 @@ class TaskStatusTest extends TestCase
         Auth::logout();
 
         $response = $this->get('/task_statuses');
-        $response->assertOk('/task_statuses');
+        $response->assertOk();
     }
 
 

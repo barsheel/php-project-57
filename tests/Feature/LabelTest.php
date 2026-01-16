@@ -123,7 +123,7 @@ class LabelTest extends TestCase
         Auth::logout();
 
         $response = $this->get('/labels');
-        $response->assertOk('/labels');
+        $response->assertOk();
     }
 
 
