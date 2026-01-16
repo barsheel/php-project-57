@@ -30,11 +30,16 @@
             <div class="flex items-center space-x-2">
                 @auth
                     <!-- Выход -->
-                        <a href="{{route('logout')}}">
-                            <x-primary-button>
-                                Выход
-                            </x-primary-button>
-                        </a>
+                    <a href="{{route('logout')}}"
+                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <x-primary-button>
+                            Выход
+                        </x-primary-button>
+                    </a>
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                        @csrf
+                    </form>
                 @else
                     <!-- Вход / Регистрация всегда видны -->
                     <a href="{{ route('login') }}">
