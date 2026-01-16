@@ -29,6 +29,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        error_log("/n START USER REGISTRATION/n " . implode(", ", $request->all()) );
         $request->validate(
             [
             'name' => ['required', 'string', 'min:1', 'max:255'],
