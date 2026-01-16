@@ -51,6 +51,8 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        error_log("/n USER WAS REGISTERED/n id= " . $user->getAttribute('id') . " name= " . $user->getAttribute('name'));
+
         return redirect(route('welcome', absolute: false));
     }
 }
