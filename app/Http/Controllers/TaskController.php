@@ -56,7 +56,7 @@ class TaskController extends Controller
         $task->created_by_id = auth()->id();
         $task->save();
 
-        dd($task->getAttribute('assigned_to_id') . "\n" . User::find($task->getAttribute('assigned_to_id'))->name);
+        error_log($task->getAttribute('assigned_to_id') . "\n" . User::find($task->getAttribute('assigned_to_id'))->name);
 
         $task->labels()->sync($request->input('labels'));
         Flash::success('Задача успешно создана');
