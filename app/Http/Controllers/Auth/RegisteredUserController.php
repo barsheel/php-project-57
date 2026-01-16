@@ -29,7 +29,6 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        error_log("/n START USER REGISTRATION/n " . implode(", ", $request->all()) );
         $request->validate(
             [
             'name' => ['required', 'string', 'min:1', 'max:255'],
@@ -51,8 +50,6 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
-
-        error_log("/n USER WAS REGISTERED/n id= " . $user->getAttribute('id') . " name= " . $user->getAttribute('name'));
 
         return redirect(route('welcome', absolute: false));
     }

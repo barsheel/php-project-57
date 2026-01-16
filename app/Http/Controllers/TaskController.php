@@ -60,9 +60,6 @@ class TaskController extends Controller
         $task = new Task($taskData);
         $task->created_by_id = auth()->id();
         $task->save();
-        error_log(User::all());
-        error_log("\nassigned_to_id --->" . $task->getAttribute('assigned_to_id') . "\n" . User::find($task->getAttribute('assigned_to_id'))?->name);
-
         $task->labels()->sync($request->input('labels'));
         Flash::success('Задача успешно создана');
         return redirect()->route('tasks.index');
