@@ -80,7 +80,6 @@ class TaskController extends Controller
         $statuses = TaskStatus::all();
         $users = User::all();
         $labels = Label::all();
-        Flash::success('Задача успешно изменена');
         return view('task.edit', compact('task', 'statuses', 'users', 'labels'));
     }
     /**
@@ -91,7 +90,7 @@ class TaskController extends Controller
         $taskData = $request->validated();
         $task->update($taskData);
         $task->labels()->sync($request->input('labels'));
-        Flash::success('Задача успешно обновлена');
+        Flash::success('Задача успешно изменена');
         return redirect()->route('tasks.index');
     }
 
