@@ -34,9 +34,9 @@ class UpdateTaskRequest extends FormRequest
     public function messages()
     {
         return [
-            "name.required" => "Название задачи обязательно",
+            "name.required" => "Это обязательное поле",
             "name.max" => "Название не может быть длиннее 255 символов",
-            "status_id.required" => "Выберите статус",
+            "status_id.required" => "Это обязательное поле",
             "status_id.exists" => "Статус не найден"
         ];
     }
