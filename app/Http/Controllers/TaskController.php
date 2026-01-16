@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Log;
 use Laracasts\Flash\Flash;
 use Mockery\Exception;
 use MongoDB\Driver\Query;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class TaskController extends Controller
@@ -27,7 +28,11 @@ class TaskController extends Controller
         $users = User::all();
 
         $tasks = QueryBuilder::for(Task::class)
-            ->allowedFilters(['status_id', 'created_by_id', 'assigned_to_id'])
+            ->allowedFilters([
+                AllowedFilter::exact('status_id'),
+                AllowedFilter::exact('created_by_id'),
+                AllowedFilter::exact('assigned_to_id')
+            ])
             ->paginate(15)
             ->withQueryString();
 
