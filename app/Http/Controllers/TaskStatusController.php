@@ -40,7 +40,7 @@ class TaskStatusController extends Controller
     {
         $data = $request->validated();
         TaskStatus::create($data);
-        Flash::success('Статус успешно создан');
+        Flash::success(__('flash.task_status.store.success'));
         return redirect()->route('task_statuses.index');
     }
 
@@ -59,7 +59,7 @@ class TaskStatusController extends Controller
     {
         $data = $request->validated();
         $taskStatus->update($data);
-        Flash::success('Статус успешно изменён');
+        Flash::success(__('flash.task_status.update.success'));
         return redirect()->route('task_statuses.index');
     }
 
@@ -70,9 +70,9 @@ class TaskStatusController extends Controller
     {
         if ($taskStatus->tasks->exists()) {
             $taskStatus->delete();
-            Flash::success('Статус успешно удалён');
+            Flash::success(__('flash.task_status.destroy.success'));
         } else {
-            Flash::error('Не удалось удалить статус');
+            Flash::error(__('flash.task_status.destroy.error'));
         }
 
         return redirect()->route('task_statuses.index');

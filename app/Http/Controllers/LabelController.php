@@ -36,7 +36,7 @@ class LabelController extends Controller
     {
         $label = Label::create($request->validated());
         $label->save();
-        Flash::success('Метка успешно создана');
+        Flash::success(__('flash.label.store.success'));
         return redirect()->route('labels.index');
     }
 
@@ -62,7 +62,7 @@ class LabelController extends Controller
     public function update(UpdateLabelRequest $request, Label $label)
     {
         $label->update($request->validated());
-        Flash::success('Метка успешно изменена');
+        Flash::success('flash.label.update.success');
         return redirect()->route('labels.index');
     }
 
@@ -72,10 +72,10 @@ class LabelController extends Controller
     public function destroy(Label $label)
     {
         if ($label->tasks()->exists()) {
-            Flash::error('Не удалось удалить метку');
+            Flash::error(__('flash.label.destroy.error'));
         } else {
             $label->delete();
-            Flash::success('Метка успешно удалена');
+            Flash::success(__('flash.label.destroy.success'));
         }
 
         return redirect()->route('labels.index');

@@ -59,7 +59,7 @@ class TaskController extends Controller
         $taskData = $request->validated();
         $task = auth()->user()->createdTasks()->create($taskData);
         $task->labels()->sync($request->input('labels'));
-        Flash::success('Задача успешно создана');
+        Flash::success(__('flash.task.store.success'));
         return redirect()->route('tasks.index');
     }
 
@@ -89,7 +89,7 @@ class TaskController extends Controller
         $taskData = $request->validated();
         $task->update($taskData);
         $task->labels()->sync($request->input('labels'));
-        Flash::success('Задача успешно изменена');
+        Flash::success(__('flash.task.update.success'));
         return redirect()->route('tasks.index');
     }
 
@@ -102,9 +102,9 @@ class TaskController extends Controller
 
         if ($user->can('delete', $task)) {
             $task->delete();
-            Flash::success('Задача успешно удалена');
+            Flash::success(__('flash.task.destroy.success'));
         } else {
-            Flash::error('Нельзя удалить задачу, созданную другим пользователем');
+            Flash::error(__('flash.task.destroy.error'));
         }
 
         return redirect()->route('tasks.index');
