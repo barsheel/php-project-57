@@ -62,7 +62,7 @@ class LabelController extends Controller
     public function update(UpdateLabelRequest $request, Label $label)
     {
         $label->update($request->validated());
-        Flash::success('flash.label.update.success');
+        Flash::success(__('flash.label.update.success'));
         return redirect()->route('labels.index');
     }
 
