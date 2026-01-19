@@ -16,7 +16,7 @@ class Task extends Model
 
     public function status()
     {
-        return $this->belongsTo(TaskStatus::class, 'status_id');
+        return $this->belongsTo(TaskStatus::class);
     }
 
     public function creator()
@@ -33,9 +33,7 @@ class Task extends Model
     {
         return $this->belongsToMany(
             Label::class,
-            'label_task_pivots',
-            'task_id',
-            'label_id',
+            'label_task_pivots'
         );
     }
 }
