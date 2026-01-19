@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TaskStatus\StoreTaskStatusRequest;
 use App\Http\Requests\TaskStatus\UpdateTaskStatusRequest;
+use App\Models\Task;
 use App\Models\TaskStatus;
 use Illuminate\Http\Request;
 use Laracasts\Flash\Flash;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class TaskStatusController extends Controller
 {
@@ -15,7 +18,10 @@ class TaskStatusController extends Controller
      */
     public function index()
     {
-        $taskStatuses = TaskStatus::all();
+        $taskStatuses = QueryBuilder::for(TaskStatus::class)
+            ->paginate(15)
+            ->withQueryString();
+
         return view('task_status.index', compact('taskStatuses'));
     }
 
@@ -32,8 +38,8 @@ class TaskStatusController extends Controller
      */
     public function store(StoreTaskStatusRequest $request)
     {
-        $request->validate(['name' => 'required']);
-        TaskStatus::create($request->all());
+        $data = $request->validated();
+        TaskStatus::create($data);
         Flash::success('Статус успешно создан');
         return redirect()->route('task_statuses.index');
     }
@@ -51,8 +57,8 @@ class TaskStatusController extends Controller
      */
     public function update(UpdateTaskStatusRequest $request, TaskStatus $taskStatus)
     {
-        $request->validate(['name' => 'required']);
-        $taskStatus->update($request->all());
+        $data = $request->validated();
+        $taskStatus->update($data);
         Flash::success('Статус успешно изменён');
         return redirect()->route('task_statuses.index');
     }
@@ -62,8 +68,13 @@ class TaskStatusController extends Controller
      */
     public function destroy(TaskStatus $taskStatus)
     {
-        $taskStatus->delete();
-        Flash::success('Статус успешно удалён');
+        if ($taskStatus->tasks->exists()) {
+            $taskStatus->delete();
+            Flash::success('Статус успешно удалён');
+        } else {
+            Flash::error('Не удалось удалить статус');
+        }
+
         return redirect()->route('task_statuses.index');
     }
 }

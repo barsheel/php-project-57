@@ -39,6 +39,9 @@
                     @endforeach
                 @endif
                 </tbody></table>
+            <div class="mt-4">
+                {{ $taskStatuses->links() }}
+            </div>
         </div>
     </div>
 </x-app-layout>
