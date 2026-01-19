@@ -2,8 +2,6 @@ start:
 	php artisan serve --host=0.0.0.0 --port=8000
 
 install:
-	composer require squizlabs/php_codesniffer
-	composer require phpstan/phpstan
 	composer install
 	composer validate
 
