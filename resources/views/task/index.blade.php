@@ -11,34 +11,34 @@
                         <div class="flex">
                             <select class="rounded border-gray-300" name="filter[status_id]" id="filter[status_id]">
                                 <option value="">Статус</option>
-                                @foreach($statuses as $status)
-                                    @if(request()->input('filter.status_id') === (string) $status->id)
+                                @foreach($statuses as $statusId => $statusName)
+                                    @if(request()->input('filter.status_id') === $statusId)
                                         <option selected="selected"
-                                                value="{{ $status->id }}">{{ $status->name }}</option>
+                                                value="{{ $statusId }}">{{ $statusName }}</option>
                                     @else
-                                        <option value="{{ $status->id }}">{{ $status->name }}</option>
+                                        <option value="{{ $statusId }}">{{ $statusName }}</option>
                                     @endif
                                 @endforeach
                             </select>
                             <select class="rounded border-gray-300" name="filter[created_by_id]"
                                     id="filter[created_by_id]">
                                 <option value="">Автор</option>
-                                @foreach($users as $user)
-                                    @if(request()->input('filter.created_by_id') === (string) $user->id)
-                                        <option selected="selected" value="{{ $user->id }}">{{ $user->name }}</option>
+                                @foreach($users as $userId => $userName)
+                                    @if(request()->input('filter.created_by_id') ===  $userId)
+                                        <option selected="selected" value="{{ $userId }}">{{ $userName }}</option>
                                     @else
-                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                        <option value="{{ $userId }}">{{ $userName }}</option>
                                     @endif
                                 @endforeach
                             </select>
                             <select class="rounded border-gray-300" name="filter[assigned_to_id]"
                                     id="filter[assigned_to_id]">
                                 <option value="">Исполнитель</option>
-                                @foreach($users as $user)
-                                    @if(request()->input('filter.assigned_to_id') === (string) $user->id)
-                                        <option selected="selected" value="{{ $user->id }}">{{ $user->name }}</option>
+                                @foreach($users as $userId => $userName)
+                                    @if(request()->input('filter.assigned_to_id') === (string) $userId)
+                                        <option selected="selected" value="{{ $userId }}">{{ $userName }}</option>
                                     @else
-                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                        <option value="{{ $userId }}">{{ $userName }}</option>
                                     @endif
                                 @endforeach
                             </select>

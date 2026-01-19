@@ -24,8 +24,8 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $statuses = TaskStatus::all();
-        $users = User::all();
+        $statuses = TaskStatus::pluck('name', 'id');
+        $users = User::pluck('name', 'id');
 
         $tasks = QueryBuilder::for(Task::class)
             ->allowedFilters([
@@ -57,9 +57,7 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request)
     {
         $taskData = $request->validated();
-        $task = new Task($taskData);
-        $task->created_by_id = auth()->id();
-        $task->save();
+        $task = auth()->user()->createdTasks()->create($taskData);
         $task->labels()->sync($request->input('labels'));
         Flash::success('Задача успешно создана');
         return redirect()->route('tasks.index');
@@ -68,9 +66,8 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Task $task)
     {
-        $task = Task::findOrFail($id);
         return view('task.show', compact('task'));
     }
 
