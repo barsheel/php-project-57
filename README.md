@@ -9,6 +9,50 @@
 ### Задеплоенное приложение
 [https://php-project-57-ibuh.onrender.com](https://php-project-57-ibuh.onrender.com)
 
+### Системные требования
+<li>PHP ^8.2</li>
+<li>Node ^20.19.2</li>
+<li>npm</li>
+<li>make</li>
 
+### Установка
+<ol>
+<li>Загрузка</li>
+
+```shell
+git clone https://github.com/barsheel/php-project-57
+cd php-project-57
+```
+
+<li>Установка</li>
+    
+    
+```bash
+make install
+```
+
+Для подключения вашей БД используйте следующие переменные окружения
+
+```text
+DB_CONNECTION=pgsql
+DB_HOST=db
+DB_PORT=5432
+DB_DATABASE=postgres
+DB_USERNAME=postgres
+DB_PASSWORD=password
+```
+
+<li>Запуск сервера</li>
+
+```bash
+make start
+```
+
+<li>Доступ</li>
+
+```bash
+http://localhost:8000
+```
+</ol>
 
 
