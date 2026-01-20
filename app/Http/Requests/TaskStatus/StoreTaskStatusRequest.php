@@ -11,7 +11,7 @@ class StoreTaskStatusRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->check();
+        return true;
     }
 
     /**
