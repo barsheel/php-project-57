@@ -6,12 +6,14 @@ use App\Http\Requests\Label\StoreLabelRequest;
 use App\Http\Requests\Label\UpdateLabelRequest;
 use App\Models\Label;
 use App\Models\Task;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Laracasts\Flash\Flash;
 use Mockery\Exception;
 
 class LabelController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
@@ -26,6 +28,7 @@ class LabelController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Label::class);
         return view('label.create');
     }
 
@@ -34,6 +37,7 @@ class LabelController extends Controller
      */
     public function store(StoreLabelRequest $request)
     {
+        $this->authorize('create', Label::class);
         $label = Label::create($request->validated());
         $label->save();
         Flash::success(__('flash.label.store.success'));
@@ -53,6 +57,7 @@ class LabelController extends Controller
      */
     public function edit(Label $label)
     {
+        $this->authorize('update', $label);
         return view('label.edit', compact('label'));
     }
 
@@ -61,6 +66,7 @@ class LabelController extends Controller
      */
     public function update(UpdateLabelRequest $request, Label $label)
     {
+        $this->authorize('update', $label);
         $label->update($request->validated());
         Flash::success(__('flash.label.update.success'));
         return redirect()->route('labels.index');
@@ -71,6 +77,7 @@ class LabelController extends Controller
      */
     public function destroy(Label $label)
     {
+        $this->authorize('delete', $label);
         if ($label->tasks()->exists()) {
             Flash::error(__('flash.label.destroy.error'));
         } else {

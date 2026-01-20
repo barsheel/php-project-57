@@ -9,6 +9,7 @@ use App\Models\Label;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Laracasts\Flash\Flash;
@@ -19,6 +20,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class TaskController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
@@ -44,6 +46,7 @@ class TaskController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', TaskStatus::class);
         $statuses = TaskStatus::all();
         $users = User::all();
         $labels = Label::all();
@@ -56,6 +59,7 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
+        $this->authorize('create', TaskStatus::class);
         $taskData = $request->validated();
         $task = auth()->user()->createdTasks()->create($taskData);
         $task->labels()->sync($request->input('labels'));
@@ -76,6 +80,7 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
+        $this->authorize('update', $task);
         $statuses = TaskStatus::all();
         $users = User::all();
         $labels = Label::all();
@@ -86,6 +91,7 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
+        $this->authorize('update', $task);
         $taskData = $request->validated();
         $task->update($taskData);
         $task->labels()->sync($request->input('labels'));
@@ -99,7 +105,6 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         $user = auth()->user();
-
         if ($user->can('delete', $task)) {
             $task->delete();
             Flash::success(__('flash.task.destroy.success'));

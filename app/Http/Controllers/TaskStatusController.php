@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Http\Requests\TaskStatus\StoreTaskStatusRequest;
 use App\Http\Requests\TaskStatus\UpdateTaskStatusRequest;
 use App\Models\Task;
@@ -13,6 +14,8 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class TaskStatusController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Display a listing of the resource.
      */
@@ -30,6 +33,7 @@ class TaskStatusController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', TaskStatus::class);
         return view('task_status.create');
     }
 
@@ -38,6 +42,7 @@ class TaskStatusController extends Controller
      */
     public function store(StoreTaskStatusRequest $request)
     {
+        $this->authorize('create', TaskStatus::class);
         $data = $request->validated();
         TaskStatus::create($data);
         Flash::success(__('flash.task_status.store.success'));
@@ -49,6 +54,7 @@ class TaskStatusController extends Controller
      */
     public function edit(TaskStatus $taskStatus)
     {
+        $this->authorize('update', $taskStatus);
         return view('task_status.edit', compact('taskStatus'));
     }
 
@@ -57,6 +63,7 @@ class TaskStatusController extends Controller
      */
     public function update(UpdateTaskStatusRequest $request, TaskStatus $taskStatus)
     {
+        $this->authorize('update', $taskStatus);
         $data = $request->validated();
         $taskStatus->update($data);
         Flash::success(__('flash.task_status.update.success'));
@@ -68,6 +75,7 @@ class TaskStatusController extends Controller
      */
     public function destroy(TaskStatus $taskStatus)
     {
+        $this->authorize('delete', $taskStatus);
         if ($taskStatus->tasks()->exists()) {
             Flash::error(__('flash.task_status.destroy.error'));
         } else {
