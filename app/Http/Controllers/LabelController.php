@@ -14,6 +14,7 @@ use Mockery\Exception;
 class LabelController extends Controller
 {
     use AuthorizesRequests;
+
     /**
      * Display a listing of the resource.
      */

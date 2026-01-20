@@ -21,6 +21,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 class TaskController extends Controller
 {
     use AuthorizesRequests;
+
     /**
      * Display a listing of the resource.
      */
