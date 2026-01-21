@@ -63,7 +63,11 @@ class TaskController extends Controller
         $this->authorize('create', TaskStatus::class);
         $taskData = $request->validated();
         $task = auth()->user()->createdTasks()->create($taskData);
-        $task->labels()->sync($request->input('labels'));
+
+        if ($request->has('labels')) {
+            $task->labels()->sync($request->input('labels'));
+        }
+
         Flash::success(__('flash.task.store.success'));
         return redirect()->route('tasks.index');
     }
@@ -95,7 +99,11 @@ class TaskController extends Controller
         $this->authorize('update', $task);
         $taskData = $request->validated();
         $task->update($taskData);
-        $task->labels()->sync($request->input('labels'));
+
+        if ($request->has('labels')) {
+            $task->labels()->sync($request->input('labels'));
+        }
+
         Flash::success(__('flash.task.update.success'));
         return redirect()->route('tasks.index');
     }
