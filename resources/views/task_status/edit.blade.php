@@ -14,7 +14,15 @@
 
                     <div>
                         <x-input-label for="name" value="Имя" />
-                        <x-text-input id="name" name="name" type="text" value="{{ $taskStatus->name }}" class="mt-1 block w-full" required autofocus />
+                        <x-text-input
+                            id="name"
+                            name="name"
+                            type="text"
+                            value="{{ old('name', $taskStatus->name) }}"
+                            class="mt-1 block w-full"
+                            required
+                            autofocus
+                        />
                         <x-input-error class="mt-2" :messages="$errors->get('name')" />
                     </div>
 

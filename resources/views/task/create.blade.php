@@ -13,14 +13,26 @@
 
                     <div>
                         <x-input-label for="name" value="Имя"/>
-                        <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" autofocus/>
+                        <x-text-input
+                            id="name"
+                            name="name"
+                            type="text"
+                            class="mt-1 block w-full"
+                            autofocus
+                            value="{{ old('name') }}"
+                        />
                         <x-input-error class="mt-2" :messages="$errors->get('name')"/>
                     </div>
 
                     <div>
                         <x-input-label for="description" value="Описание"/>
-                        <x-textarea-input id="description" name="description" cols="30" rows="6"
-                                          class="mt-1 block w-full"></x-textarea-input>
+                        <x-textarea-input
+                            id="description"
+                            name="description"
+                            cols="30"
+                            rows="6"
+                            class="mt-1 block w-full"
+                        >{{ old('description') }}</x-textarea-input>
                         <x-input-error class="mt-2" :messages="$errors->get('description')"/>
                     </div>
 
@@ -30,7 +42,9 @@
                                 class="mt-1 block border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                             <option value=""></option>
                             @foreach($statuses as $status)
-                                <option value="{{ $status->id }}">{{ $status->name }}</option>
+                                <option value="{{ $status->id }}" {{ old('status_id') == $status->id ? 'selected' : '' }}>
+                                    {{ $status->name }}
+                                </option>
                             @endforeach
                         </select>
                         <x-input-error class="mt-2" :messages="$errors->get('status_id')"/>
@@ -42,7 +56,9 @@
                                 class="mt-1 block border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                             <option value=""></option>
                             @foreach($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                <option value="{{ $user->id }}" {{ old('assigned_to_id') == $user->id ? 'selected' : '' }}>
+                                    {{ $user->name }}
+                                </option>
                             @endforeach
                         </select>
                         <x-input-error class="mt-2" :messages="$errors->get('assigned_to_id')"/>
@@ -50,10 +66,12 @@
 
                     <div>
                         <x-input-label for="labels[]" value="Метки"/>
-                        <select id="labels[]" name="labels[]" multiple=""
+                        <select id="labels[]" name="labels[]" multiple
                                 class="mt-1 block border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                             @foreach($labels as $label)
-                                <option value="{{ $label->id }}">{{ $label->name }}</option>
+                                <option value="{{ $label->id }}" {{ in_array($label->id, old('labels', [])) ? 'selected' : '' }}>
+                                    {{ $label->name }}
+                                </option>
                             @endforeach
                         </select>
                         <x-input-error class="mt-2" :messages="$errors->get('labels')"/>

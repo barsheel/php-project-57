@@ -13,7 +13,14 @@
 
                     <div>
                         <x-input-label for="name" value="Имя" />
-                        <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" autofocus />
+                        <x-text-input
+                            id="name"
+                            name="name"
+                            type="text"
+                            value="{{ old('name') }}"
+                            class="mt-1 block w-full"
+                            autofocus
+                        />
                         <x-input-error class="mt-2" :messages="$errors->get('name')" />
                     </div>
 
