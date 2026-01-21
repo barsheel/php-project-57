@@ -6,11 +6,11 @@ use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 
-Route::resource('labels', LabelController::class);
-
-Route::resource('task_statuses', TaskStatusController::class);
-
-Route::resource('tasks', TaskController::class);
+Route::resources([
+    'labels' => LabelController::class,
+    'tasks' => TaskController::class,
+    'task_statuses' => TaskStatusController::class,
+]);
 
 Route::get('/', function () {
     return view('welcome');
