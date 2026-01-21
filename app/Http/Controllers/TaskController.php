@@ -114,7 +114,8 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         $user = auth()->user();
-        if ($user->can('delete', $task)) {
+
+        if ($user?->can('delete', $task)) {
             $task->delete();
             Flash::success(__('flash.task.destroy.success'));
         } else {
