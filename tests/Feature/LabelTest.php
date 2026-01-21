@@ -167,7 +167,4 @@ class LabelTest extends TestCase
         $response = $this->delete("/labels/{$this->label->id}");
         $response->assertStatus(403);
     }
-
-
-
 }
