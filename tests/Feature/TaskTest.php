@@ -109,8 +109,11 @@ class TaskTest extends TestCase
 
     public function testUserCanDeleteOwnTask(): void
     {
+        $this->task->creator()->associate($this->user);
+        $this->task->save();
+
         $response = $this
-            ->actingAs($this->task->creator)
+            ->actingAs($this->user)
             ->delete("/tasks/{$this->task->id}");
 
         $this->assertDatabaseMissing('tasks', [
