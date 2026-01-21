@@ -17,11 +17,14 @@ class LabelTest extends TestCase
     use RefreshDatabase;
 
     private User $user;
+    private Label $label;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->user = User::factory()->create();
+        Label::factory()->count(10)->create();
+        $this->label = Label::query()->first();
     }
 
 
@@ -47,7 +50,7 @@ class LabelTest extends TestCase
                 'name' => 'test',
             ]);
 
-        $response = $this->get('/labels/1/edit');
+        $response = $this->get("/labels/{$this->label->id}/edit");
         $response->assertOk();
     }
 
@@ -69,113 +72,41 @@ class LabelTest extends TestCase
 
     public function testUserCanUpdateLabel(): void
     {
-        $this
-            ->actingAs($this->user)
-            ->post('/labels', [
-                'name' => 'old name',
-            ]);
+        $oldName = $this->label->name;
 
         $response = $this
             ->actingAs($this->user)
-            ->patch('/labels/1', [
-                'name' => 'new name',
+            ->patch("/labels/{$this->label->id}", [
+                'name' => 'NEW NAME',
             ]);
 
         $response->assertRedirect('/labels');
 
         $this->assertDatabaseHas('labels', [
-            'name' => 'new name',
+            'name' => 'NEW NAME',
         ]);
 
         $this->assertDatabaseMissing('labels', [
-            'name' => 'old name',
+            'name' => $oldName
         ]);
     }
 
     public function testUserCanDeleteLabel(): void
     {
-        $this
-            ->actingAs($this->user)
-            ->post('/labels', [
-                'name' => 'test',
-            ]);
-
-        $this->assertDatabaseHas('labels', [
-            'id' => '1',
-        ]);
-
         $response = $this
             ->actingAs($this->user)
-            ->delete('/labels/1');
+            ->delete("/labels/{$this->label->id}");
 
         $response->assertRedirect('/labels');
 
         $this->assertDatabaseMissing('labels', [
-            'id' => '1',
+            'id' => $this->label->id,
         ]);
     }
 
-
-
-    // guest
-    public function testGuestCanSeeLabels(): void
+    public function testUserCannotDeleteTaskIfUsed(): void
     {
-        Auth::logout();
-
-        $response = $this->get('/labels');
-        $response->assertOk();
-    }
-
-
-    public function testGuestCannotSeeLabelCreateForm(): void
-    {
-        Auth::logout();
-
-        $response = $this->get('/labels/create');
-        $response->assertRedirect('/login');
-    }
-
-    public function testGuestCannotSeeLabelEditForm(): void
-    {
-        Auth::logout();
-
-        $response = $this->get('/labels/1/edit');
-        $response->assertRedirect('/login');
-    }
-
-
-    public function testGuestCannotStoreLabel(): void
-    {
-        Auth::logout();
-
-        $response = $this->post('/labels', ['name' => 'new status']);
-        $response->assertRedirect('/login');
-    }
-
-    public function testGuestCannotUpdateLabel(): void
-    {
-        Auth::logout();
-
-        $response = $this->patch('/labels/1', ['name' => 'updated']);
-        $response->assertRedirect('/login');
-    }
-
-    public function testGuestCannotDeleteLabel(): void
-    {
-        Auth::logout();
-
-        $response = $this->delete('/labels/1');
-        $response->assertRedirect('/login');
-    }
-
-
-    public function testGuestCannotDeleteTaskIfUsed(): void
-    {
-        $label = Label::create(['name' => 'test']);
-        $this->assertDatabaseHas('labels', ['name' => 'test']);
-
-        $taskStatus = TaskStatus::create(['name' => 'test']);
-        $this->assertDatabaseHas('task_statuses', ['name' => 'test']);
+        $taskStatus = TaskStatus::factory()->create();
 
         $response = $this
             ->actingAs($this->user)
@@ -185,11 +116,58 @@ class LabelTest extends TestCase
                 'status_id' => $taskStatus->id,
                 'created_by_id' => $this->user->id,
                 'assigned_to_id' => $this->user->id,
+                'labels' => [$this->label->id]
             ]);
 
-        $this->assertDatabaseHas('tasks', ['name' => 'test']);
-        $response = $this->delete('/labels/1');
+        $this->assertDatabaseHas('tasks', [
+            'name' => 'test'
+        ]);
+        $response = $this->delete("/labels/{$this->label->id}");
         $response->assertRedirect('/labels');
-        $this->assertDatabaseMissing('labels', ['id' => '1']);
+        $this->assertDatabaseHas('labels', [
+            'id' => $this->label->id
+        ]);
     }
+
+    // guest
+    public function testGuestCanSeeLabels(): void
+    {
+        $response = $this->get('/labels');
+        $response->assertOk();
+    }
+
+
+    public function testGuestCannotSeeLabelCreateForm(): void
+    {
+        $response = $this->get('/labels/create');
+        $response->assertStatus(403);
+    }
+
+    public function testGuestCannotSeeLabelEditForm(): void
+    {
+        $response = $this->get('/labels/1/edit');
+        $response->assertStatus(403);
+    }
+
+
+    public function testGuestCannotStoreLabel(): void
+    {
+        $response = $this->post('/labels', ['name' => 'new status']);
+        $response->assertStatus(403);
+    }
+
+    public function testGuestCannotUpdateLabel(): void
+    {
+        $response = $this->patch('/labels/1', ['name' => 'updated']);
+        $response->assertStatus(403);
+    }
+
+    public function testGuestCannotDeleteLabel(): void
+    {
+        $response = $this->delete("/labels/{$this->label->id}");
+        $response->assertStatus(403);
+    }
+
+
+
 }

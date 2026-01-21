@@ -19,6 +19,8 @@ class TaskTest extends TestCase
 
     private TaskStatus $taskStatus;
 
+    private Task $task;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -26,14 +28,8 @@ class TaskTest extends TestCase
         $this->user = User::factory()->create();
         $this->assignedUser = User::factory()->create();
         $this->taskStatus = TaskStatus::factory()->create();
-
-        Task::create([
-            'name' => 'INITIAL NAME',
-            'description' => 'INITIAL DESCRIPTION',
-            'status_id' => $this->taskStatus->id,
-            'created_by_id' => $this->user->id,
-            'assigned_to_id' => $this->assignedUser->id
-        ]);
+        Task::factory()->count(10)->create();
+        $this->task = Task::query()->first();
     }
 
 
@@ -55,7 +51,7 @@ class TaskTest extends TestCase
 
     public function testUserCanSeeTask(): void
     {
-        $response = $this->get('/tasks/1');
+        $response = $this->get("/tasks/{$this->task->id}");
         $response->assertOk();
     }
 
@@ -63,7 +59,7 @@ class TaskTest extends TestCase
     {
         $response = $this
             ->actingAs($this->user)
-            ->get('/tasks/1/edit');
+            ->get("/tasks/{$this->task->id}/edit");
 
         $response->assertOk();
     }
@@ -89,13 +85,11 @@ class TaskTest extends TestCase
 
     public function testUserCanUpdateTask(): void
     {
-        $this->assertDatabaseHas('tasks', [
-            'name' => 'INITIAL NAME'
-        ]);
+        $initialName = $this->task->name;
 
         $response = $this
             ->actingAs($this->user)
-            ->patch('/tasks/1', [
+            ->patch("/tasks/{$this->task->id}", [
                 'name' => 'CHANGED NAME',
                 'description' => 'CHANGED DESCRIPTION',
                 'status_id' => $this->taskStatus->id,
@@ -105,7 +99,7 @@ class TaskTest extends TestCase
         $response->assertRedirect('/tasks');
 
         $this->assertDatabaseMissing('tasks', [
-            'name' => 'INITIAL NAME'
+            'name' => $initialName
         ]);
 
         $this->assertDatabaseHas('tasks', [
@@ -116,11 +110,11 @@ class TaskTest extends TestCase
     public function testUserCanDeleteOwnTask(): void
     {
         $response = $this
-            ->actingAs($this->user)
-            ->delete('/tasks/1');
+            ->actingAs($this->task->creator)
+            ->delete("/tasks/{$this->task->id}");
 
         $this->assertDatabaseMissing('tasks', [
-            'id' => 1
+            'id' => $this->task->id
         ]);
         $response->assertRedirect('/tasks');
     }
@@ -128,13 +122,13 @@ class TaskTest extends TestCase
     public function testUserCantDeleteForeignUsersTask(): void
     {
         $response = $this
-            ->actingAs($this->assignedUser)
-            ->delete('/tasks/1');
+            ->actingAs(User::factory()->create())
+            ->delete("/tasks/{$this->task->id}");
 
         $response->assertRedirect('/tasks');
 
         $this->assertDatabaseHas('tasks', [
-            'id' => '1'
+            'id' => $this->task->id
         ]);
     }
 
@@ -142,20 +136,21 @@ class TaskTest extends TestCase
     // guest tests
     public function testGuestCanSeeTask(): void
     {
-        $response = $this->get('/tasks/1/edit');
+        $response = $this->get("/tasks/{$this->task->id}");
         $response->assertOk();
     }
 
     public function testGuestCanSeeTasks(): void
     {
-        $response = $this->get('/tasks');
+        $response = $this->get("/tasks");
         $response->assertOk();
     }
 
     public function testGuestCantCreateTask(): void
     {
+        $taskCount = Task::count();
         $response = $this
-            ->post('/tasks', [
+            ->post("/tasks", [
                 'name' => 'NEW NAME',
                 'description' => 'NEW DESCRIPTION',
                 'status_id' => $this->taskStatus->id,
@@ -163,19 +158,16 @@ class TaskTest extends TestCase
                 'assigned_to_id' => $this->assignedUser->id,
             ]);
 
-        $response->assertRedirect('/login');
+        $response->assertStatus(403);
 
-        $this->assertDatabaseMissing('tasks', [
-            'id' => '2'
-        ]);
+        $this->assertDatabaseCount('tasks', $taskCount);
     }
 
     public function testGuestCantUpdateTask(): void
     {
         $response = $this
-            ->actingAs($this->user)
             ->patch('/tasks', [
-                'id' => 1,
+                'id' => $this->task->id,
                 'name' => 'NEW NAME',
                 'description' => 'NEW DESCRIPTION',
                 'status_id' => $this->taskStatus->id,
@@ -186,7 +178,7 @@ class TaskTest extends TestCase
         $response->assertStatus(405);
 
         $this->assertDatabaseMissing('tasks', [
-            'id' => '1',
+            'id' => $this->task->id,
             'name' => 'NEW NAME'
         ]);
     }
@@ -194,15 +186,12 @@ class TaskTest extends TestCase
     public function testGuestCantDeleteTask(): void
     {
         $response = $this
-            ->actingAs($this->user)
-            ->delete('/tasks', [
-                'id' => 1
-            ]);
+            ->delete("/tasks/{$this->task->id}");
 
-        $response->assertStatus(405);
+        $response->assertStatus(302);
 
         $this->assertDatabaseHas('tasks', [
-            'id' => '1'
+            'id' =>  $this->task->id
         ]);
     }
 }

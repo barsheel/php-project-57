@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\TaskStatus;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
@@ -12,11 +13,14 @@ class TaskStatusTest extends TestCase
     use RefreshDatabase;
 
     private User $user;
+    private TaskStatus $taskStatus;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->user = User::factory()->create();
+        TaskStatus::factory()->count(10)->create();
+        $this->taskStatus = TaskStatus::query()->first();
     }
 
 
@@ -42,7 +46,7 @@ class TaskStatusTest extends TestCase
                 'name' => 'test',
             ]);
 
-        $response = $this->get('/task_statuses/1/edit');
+        $response = $this->get("/task_statuses/{$this->taskStatus->id}/edit");
         $response->assertOk();
     }
 
@@ -64,15 +68,11 @@ class TaskStatusTest extends TestCase
 
     public function testUserCanUpdateTaskStatus(): void
     {
-        $this
-            ->actingAs($this->user)
-            ->post('/task_statuses', [
-                'name' => 'old status',
-            ]);
+        $oldName = $this->taskStatus->name;
 
         $response = $this
             ->actingAs($this->user)
-            ->patch('/task_statuses/1', [
+            ->patch("/task_statuses/{$this->taskStatus->id}", [
                 'name' => 'new status',
             ]);
 
@@ -83,30 +83,20 @@ class TaskStatusTest extends TestCase
         ]);
 
         $this->assertDatabaseMissing('task_statuses', [
-            'name' => 'old status',
+            'name' => $oldName
         ]);
     }
 
     public function testUserCanDeleteTaskStatus(): void
     {
-        $this
-            ->actingAs($this->user)
-            ->post('/task_statuses', [
-                'name' => 'test',
-            ]);
-
-        $this->assertDatabaseHas('task_statuses', [
-            'id' => '1',
-        ]);
-
         $response = $this
             ->actingAs($this->user)
-            ->delete('/task_statuses/1');
+            ->delete("/task_statuses/{$this->taskStatus->id}");
 
         $response->assertRedirect('/task_statuses');
 
         $this->assertDatabaseMissing('task_statuses', [
-            'id' => '1',
+            'id' => $this->taskStatus->id,
         ]);
     }
 
@@ -127,39 +117,34 @@ class TaskStatusTest extends TestCase
         Auth::logout();
 
         $response = $this->get('/task_statuses/create');
-        $response->assertRedirect('/login');
+        $response->assertStatus(403);
     }
 
     public function testGuestCannotSeeTaskStatusEditForm(): void
     {
-        Auth::logout();
-
-        $response = $this->get('/task_statuses/1/edit');
-        $response->assertRedirect('/login');
+        $response = $this->get("/task_statuses/{$this->taskStatus->id}/edit");
+        $response->assertStatus(403);
     }
 
 
     public function testGuestCannotStoreTaskStatus(): void
     {
-        Auth::logout();
-
         $response = $this->post('/task_statuses', ['name' => 'new status']);
-        $response->assertRedirect('/login');
+        $response->assertStatus(403);
+        $this->assertDatabaseMissing('task_statuses', ['name' => 'new status']);
     }
 
     public function testGuestCannotUpdateTaskStatus(): void
     {
-        Auth::logout();
-
-        $response = $this->patch('/task_statuses/1', ['name' => 'updated']);
-        $response->assertRedirect('/login');
+        $response = $this->patch("/task_statuses/{$this->taskStatus->id}", ['name' => 'updated']);
+        $response->assertStatus(403);
+        $this->assertDatabaseMissing('task_statuses', ['name' => 'updated']);
     }
 
     public function testGuestCannotDeleteTaskStatus(): void
     {
-        Auth::logout();
-
-        $response = $this->delete('/task_statuses/1');
-        $response->assertRedirect('/login');
+        $response = $this->delete("/task_statuses/{$this->taskStatus->id}");
+        $response->assertStatus(403);
+        $this->assertDatabaseHas('task_statuses', ['id' => $this->taskStatus->id]);
     }
 }
