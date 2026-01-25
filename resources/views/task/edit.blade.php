@@ -14,14 +14,14 @@
 
                     <div>
                         <x-input-label for="name" value="Имя"/>
-                        <x-text-input id="name" name="name" type="text" value="{{ $task->name }}"
-                                      class="mt-1 block w-full" required autofocus/>
+                        <x-text-input id="name" name="name" type="text" :value="old('name', $task->name)"
+                                      class="mt-1 block w-full" autofocus/>
                         <x-input-error class="mt-2" :messages="$errors->get('name')"/>
                     </div>
 
                     <div>
-                        <x-input-label for="description" value="'Описание"/>
-                        <x-textarea-input id="description" name="description" :value="$task->description"
+                        <x-input-label for="description" value="Описание"/>
+                        <x-textarea-input id="description" name="description" :value="old('description',$task->description)"
                                           cols="30"
                                           rows="6"
                                           class="mt-1 block w-full"></x-textarea-input>
@@ -33,11 +33,9 @@
                         <select id="status_id" name="status_id"
                                 class="mt-1 block border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                             @foreach($statuses as $status)
-                                @if($status->id === $task->status->id)
-                                    <option selected="selected" value="{{ $status->id }}">{{ $status->name }}</option>
-                                @else
-                                    <option value="{{ $status->id }}">{{ $status->name }}</option>
-                                @endif
+                                <option value="{{ $status->id }}"
+                                        @selected($status->id === $task->status->id)>
+                                    {{ $status->name }}</option>
                             @endforeach
                         </select>
                         <x-input-error class="mt-2" :messages="$errors->get('status_id')"/>
@@ -49,8 +47,8 @@
                                 class="mt-1 block border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                             <option value=""></option>
                             @foreach($users as $user)
-                                <option value="{{ $user->id }}"
-                                    {{ $user->id == optional($task->assigned)->id ? 'selected' : '' }}>
+                                <option value="{{ $user->id}}"
+                                    @selected($user->id == optional($task->assigned)->id)>
                                     {{ $user->name }}
                                 </option>
                             @endforeach
@@ -63,11 +61,10 @@
                         <select id="labels[]" name="labels[]" multiple=""
                                 class="mt-1 block border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                             @foreach($labels as $label)
-                                @if($task->labels()->where('label_id', $label->id)->exists())
-                                    <option selected="selected" value="{{ $label->id }}">{{ $label->name }}</option>
-                                @else
-                                    <option value="{{ $label->id }}">{{ $label->name }}</option>
-                                @endif
+                                    <option value="{{ $label->id }}"
+                                        @selected(in_array($label->id, old('labels', $task->labels->pluck('id')->toArray())))>
+                                        {{ $label->name}}
+                                    </option>
                             @endforeach
                         </select>
                         <x-input-error class="mt-2" :messages="$errors->get('labels')"/>
