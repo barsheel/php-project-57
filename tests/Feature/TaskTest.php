@@ -117,7 +117,7 @@ class TaskTest extends TestCase
 
         $response = $this
             ->actingAs($this->user)
-            ->delete(route('tasks.destroy',$this->task->id));
+            ->delete(route('tasks.destroy', $this->task->id));
 
         $this->assertDatabaseMissing('tasks', [
             'id' => $this->task->id

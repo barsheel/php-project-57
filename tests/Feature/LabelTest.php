@@ -154,8 +154,10 @@ class LabelTest extends TestCase
     public function testGuestCannotStoreLabel(): void
     {
         $response = $this
-            ->post(route('labels.store'),
-                ['name' => 'new status']);
+            ->post(
+                route('labels.store'),
+                ['name' => 'new status']
+            );
 
         $response->assertStatus(403);
         $this->assertDatabaseMissing('labels', ['name' => 'new status']);
@@ -164,8 +166,10 @@ class LabelTest extends TestCase
     public function testGuestCannotUpdateLabel(): void
     {
         $response = $this
-            ->patch(route('labels.update', $this->label->id),
-                ['name' => 'updated']);
+            ->patch(
+                route('labels.update', $this->label->id),
+                ['name' => 'updated']
+            );
 
         $response->assertStatus(403);
         $this->assertDatabaseMissing('labels', ['name' => 'updated']);
