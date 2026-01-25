@@ -18,15 +18,20 @@ class TaskStatusTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->user = User::factory()->create();
         TaskStatus::factory()->count(10)->create();
         $this->taskStatus = TaskStatus::query()->first();
     }
 
+    // -------------------------
+    // User tests
+    // -------------------------
 
     public function testUserCanSeeTaskStatuses(): void
     {
-        $response = $this->get('/task_statuses');
+        $response = $this->get(route('task_statuses.index'));
+
         $response->assertOk();
     }
 
@@ -34,7 +39,8 @@ class TaskStatusTest extends TestCase
     {
         $response = $this
             ->actingAs($this->user)
-            ->get('/task_statuses/create');
+            ->get(route('task_statuses.create'));
+
         $response->assertOk();
     }
 
@@ -42,25 +48,21 @@ class TaskStatusTest extends TestCase
     {
         $this
             ->actingAs($this->user)
-            ->post('/task_statuses', [
-                'name' => 'test',
-            ]);
+            ->post(route('task_statuses.store'), ['name' => 'test']);
 
-        $response = $this->get("/task_statuses/{$this->taskStatus->id}/edit");
+        $response = $this->get(route('task_statuses.edit', $this->taskStatus->id));
         $response->assertOk();
     }
-
 
     public function testUserCanStoreTaskStatus(): void
     {
         $response = $this
             ->actingAs($this->user)
-            ->post('/task_statuses', [
+            ->post(route('task_statuses.store'), [
                 'name' => 'test',
             ]);
 
-        $response->assertRedirect('/task_statuses');
-
+        $response->assertRedirect(route('task_statuses.index'));
         $this->assertDatabaseHas('task_statuses', [
             'name' => 'test',
         ]);
@@ -72,18 +74,16 @@ class TaskStatusTest extends TestCase
 
         $response = $this
             ->actingAs($this->user)
-            ->patch("/task_statuses/{$this->taskStatus->id}", [
+            ->patch(route('task_statuses.update', $this->taskStatus->id), [
                 'name' => 'new status',
             ]);
 
-        $response->assertRedirect('/task_statuses');
-
+        $response->assertRedirect(route('task_statuses.index'));
         $this->assertDatabaseHas('task_statuses', [
             'name' => 'new status',
         ]);
-
         $this->assertDatabaseMissing('task_statuses', [
-            'name' => $oldName
+            'name' => $oldName,
         ]);
     }
 
@@ -91,59 +91,65 @@ class TaskStatusTest extends TestCase
     {
         $response = $this
             ->actingAs($this->user)
-            ->delete("/task_statuses/{$this->taskStatus->id}");
+            ->delete(route('task_statuses.destroy', $this->taskStatus->id));
 
-        $response->assertRedirect('/task_statuses');
-
+        $response->assertRedirect(route('task_statuses.index'));
         $this->assertDatabaseMissing('task_statuses', [
             'id' => $this->taskStatus->id,
         ]);
     }
 
+    // -------------------------
+    // Guest tests
+    // -------------------------
 
-
-    // guest
     public function testGuestCanSeeTaskStatuses(): void
     {
-        Auth::logout();
+        $response = $this
+            ->get(route('task_statuses.index'));
 
-        $response = $this->get('/task_statuses');
         $response->assertOk();
     }
 
-
     public function testGuestCannotSeeTaskStatusCreateForm(): void
     {
-        Auth::logout();
+        $response = $this
+            ->get(route('task_statuses.create'));
 
-        $response = $this->get('/task_statuses/create');
         $response->assertStatus(403);
     }
 
     public function testGuestCannotSeeTaskStatusEditForm(): void
     {
-        $response = $this->get("/task_statuses/{$this->taskStatus->id}/edit");
+        $response = $this
+            ->get(route('task_statuses.edit', $this->taskStatus->id));
+
         $response->assertStatus(403);
     }
 
-
     public function testGuestCannotStoreTaskStatus(): void
     {
-        $response = $this->post('/task_statuses', ['name' => 'new status']);
+        $response = $this
+            ->post(route('task_statuses.store'), ['name' => 'new status']);
+
         $response->assertStatus(403);
         $this->assertDatabaseMissing('task_statuses', ['name' => 'new status']);
     }
 
     public function testGuestCannotUpdateTaskStatus(): void
     {
-        $response = $this->patch("/task_statuses/{$this->taskStatus->id}", ['name' => 'updated']);
+        $response = $this
+            ->patch(route('task_statuses.update', $this->taskStatus->id), ['name' => 'updated']);
+
         $response->assertStatus(403);
         $this->assertDatabaseMissing('task_statuses', ['name' => 'updated']);
     }
 
     public function testGuestCannotDeleteTaskStatus(): void
     {
-        $response = $this->delete("/task_statuses/{$this->taskStatus->id}");
+        $response = $this
+            ->delete(route('task_statuses.destroy', $this->taskStatus->id));
+
         $response->assertStatus(403);
         $this->assertDatabaseHas('task_statuses', ['id' => $this->taskStatus->id]);
     }
