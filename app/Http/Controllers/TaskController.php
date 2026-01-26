@@ -89,7 +89,8 @@ class TaskController extends Controller
         $statuses = TaskStatus::all();
         $users = User::all();
         $labels = Label::all();
-        return view('task.edit', compact('task', 'statuses', 'users', 'labels'));
+        $selectedLabels = old('labels', $task->labels()->pluck('labels.id')->toArray());
+        return view('task.edit', compact('task', 'statuses', 'users', 'labels', 'selectedLabels'));
     }
     /**
      * Update the specified resource in storage.

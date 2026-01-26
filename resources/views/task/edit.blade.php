@@ -62,7 +62,7 @@
                                 class="mt-1 block border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                             @foreach($labels as $label)
                                     <option value="{{ $label->id }}"
-                                        @selected(in_array($label->id, old('labels', $task->labels->pluck('id')->toArray())))>
+                                        @selected(in_array($label->id, $selectedLabels))>
                                         {{ $label->name}}
                                     </option>
                             @endforeach
